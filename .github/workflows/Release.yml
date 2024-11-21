@@ -35,12 +35,6 @@ jobs:
           cd box
           make lib_install
           gomobile init
-          
-      - name: Build xcframework
-        run: |
-          cd box
-          go run ./cmd/internal/build_libbox -target=ios
-          zip -ry ./Libbox.xcframework.zip ./Libbox.xcframework
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4.5.0
@@ -49,6 +43,12 @@ jobs:
         run: |
           cd box
           go run ./cmd/internal/build_libbox -target=android
+          
+      - name: Build xcframework
+        run: |
+          cd box
+          go run ./cmd/internal/build_libbox -target=ios
+          zip -ry ./Libbox.xcframework.zip ./Libbox.xcframework
 
       - name: Detect checksum
         run: |
