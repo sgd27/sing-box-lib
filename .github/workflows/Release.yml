@@ -42,6 +42,9 @@ jobs:
           go run ./cmd/internal/build_libbox -target=ios
           zip -ry ./Libbox.xcframework.zip ./Libbox.xcframework
 
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.5.0
+
       - name: Build aar
         run: |
           cd box
