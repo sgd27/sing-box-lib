@@ -50,6 +50,17 @@ jobs:
           make lib_install
           gomobile init
 
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.5.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build aar
+        run: |
+          cd box
+          go run ./cmd/internal/build_libbox -target=android
+
       # --- Build the iOS xcframework ---
       - name: Build xcframework
         run: |
@@ -82,7 +93,7 @@ jobs:
           echo "  targets: [" >> Package.swift
           echo "    .binaryTarget(" >> Package.swift
           echo "      name: \"Libbox\"," >> Package.swift
-          echo "      url: \"https://github.com/EbrahimTahernejad/sing-box-lib/releases/download/${{ github.event.inputs.version }}/Libbox.xcframework.zip\"," >> Package.swift
+          echo "      url: \"https://github.com/sgd27/sing-box-lib/releases/download/${{ github.event.inputs.version }}/Libbox.xcframework.zip\"," >> Package.swift
           echo "      checksum: \"${{ env.file_checksum }}\"" >> Package.swift
           echo "    )" >> Package.swift
           echo "  ]" >> Package.swift
@@ -93,8 +104,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Libbox Release ${{ github.event.inputs.version }}"
-          commit_user_name: "Ebrahim"
-          commit_user_email: "ebrahimtahernejad@gmail.com"
+          commit_user_name: sgd27
+          commit_user_email: gshi2012@gmail.com
           tagging_message: "${{ github.event.inputs.version }}"
           file_pattern: Package.swift
 
@@ -106,3 +117,5 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           body: "Compiled from source tag: ${{ github.event.inputs.tag }}"
           files: box/Libbox.xcframework.zip
+                 box/libbox.aar
+
